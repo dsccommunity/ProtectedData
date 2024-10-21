@@ -2,7 +2,6 @@
 ####################################################
 #          ModuleBuilder Configuration             #
 ####################################################
-
 BuiltModuleSubdirectory: module
 CopyPaths:
   - en-US
@@ -14,13 +13,11 @@ VersionedOutputDirectory: true
 ####################################################
 #      ModuleBuilder Submodules Configuration      #
 ####################################################
-
 Prefix: Prefix.ps1
 
 ####################################################
 #       Sampler Pipeline Configuration             #
 ####################################################
-# Defining 'Workflows' (suite of InvokeBuild tasks) to be run using their alias
 BuildWorkflow:
   ".":
     - build
@@ -50,7 +47,6 @@ BuildWorkflow:
 ####################################################
 #       PESTER  Configuration                      #
 ####################################################
-
 Pester:
   OutputFormat: NUnitXML
   ExcludeFromCodeCoverage:
@@ -82,7 +78,6 @@ ModuleBuildTasks:
   Sampler.GitHubTasks:
     - "*.ib.tasks"
 
-# Invoke-Build Header to be used to 'decorate' the terminal output of the tasks.
 TaskHeader: |
   param($Path)
   ""
