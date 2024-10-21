@@ -42,8 +42,8 @@ function Unprotect-KeyDataWithEcdhCertificate
             throw "Error: Key material derived from ECDH certificate $($Certificate.Thumbprint) was less than the required 32 bytes"
         }
 
-        $key = (Unprotect-DataWithAes -CipherText $KeyData.Key -Key $derivedKey -InitializationVector $KeyData.EcdhIV).PlainText
-        $iv = (Unprotect-DataWithAes -CipherText $KeyData.IV -Key $derivedKey -InitializationVector $KeyData.EcdhIV).PlainText
+        $key = (Unprotect-DataWithAES -CipherText $KeyData.Key -Key $derivedKey -InitializationVector $KeyData.EcdhIV).PlainText
+        $iv = (Unprotect-DataWithAES -CipherText $KeyData.IV -Key $derivedKey -InitializationVector $KeyData.EcdhIV).PlainText
 
         $doFinallyBlock = $false
 

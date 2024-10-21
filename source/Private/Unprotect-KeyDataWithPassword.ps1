@@ -30,8 +30,8 @@ function Unprotect-KeyDataWithPassword
         $ephemeralKey = New-Object PowerShellUtils.PinnedArray[byte](, $keyGen.GetBytes(32))
         $ephemeralIV = New-Object PowerShellUtils.PinnedArray[byte](, $keyGen.GetBytes(16))
 
-        $key = (Unprotect-DataWithAes -CipherText $KeyData.Key -Key $ephemeralKey -InitializationVector $ephemeralIV).PlainText
-        $iv = (Unprotect-DataWithAes -CipherText $KeyData.IV -Key $ephemeralKey -InitializationVector $ephemeralIV).PlainText
+        $key = (Unprotect-DataWithAES -CipherText $KeyData.Key -Key $ephemeralKey -InitializationVector $ephemeralIV).PlainText
+        $iv = (Unprotect-DataWithAES -CipherText $KeyData.IV -Key $ephemeralKey -InitializationVector $ephemeralIV).PlainText
 
         $doFinallyBlock = $false
 

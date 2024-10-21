@@ -98,5 +98,5 @@ SEE ALSO
     Unprotect-Data
     Add-ProtectedDataCredential
     Remove-ProtectedDataCredential
-    Get-ProtectedDataSupportedTypes
+    Get-ProtectedDataSupportedType
     Get-KeyEncryptionCertificate

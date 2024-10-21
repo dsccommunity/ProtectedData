@@ -2,6 +2,7 @@
 function ConvertFrom-ByteArray
 {
     [CmdletBinding()]
+    [OutputType([System.Array])]
     param (
         [Parameter(Mandatory = $true)]
         [byte[]]
@@ -9,9 +10,9 @@ function ConvertFrom-ByteArray
 
         [Parameter(Mandatory = $true)]
         [ValidateScript({
-                if ((Get-ProtectedDataSupportedTypes) -notcontains $_)
+                if ((Get-ProtectedDataSupportedType) -notcontains $_)
                 {
-                    throw "Invalid type specified. Type must be one of: $((Get-ProtectedDataSupportedTypes) -join ', ')"
+                    throw "Invalid type specified. Type must be one of: $((Get-ProtectedDataSupportedType) -join ', ')"
                 }
 
                 return $true

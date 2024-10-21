@@ -42,7 +42,7 @@ function Add-ProtectedDataCredential
     .LINK
         Remove-ProtectedDataCredential
     .LINK
-        Get-ProtectedDataSupportedTypes
+        Get-ProtectedDataSupportedType
     #>
 
     [CmdletBinding(DefaultParameterSetName = 'Certificate')]

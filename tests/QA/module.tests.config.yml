@@ -20,9 +20,9 @@ ModuleTests:
     - Get-Hmac
     - Get-KeyGenerator
     - Get-PasswordHash
-    - Get-RandomBytes
+    - Get-RandomByte
     - GetCertificateFromPSPath
-    - Protect-DataWithAes
+    - Protect-DataWithAES
     - Protect-KeyDataWithCertificate
     - Protect-KeyDataWithEcdhCertificate
     - Protect-KeyDataWithPassword
@@ -34,7 +34,7 @@ ModuleTests:
     - Test-IsProtectedData
     - Test-KeyEncryptionCertificate
     - Test-PrivateKey
-    - Unprotect-DataWithAes
+    - Unprotect-DataWithAES
     - Unprotect-KeyDataWithCertificate
     - Unprotect-KeyDataWithEcdhCertificate
     - Unprotect-KeyDataWithPassword
@@ -46,7 +46,7 @@ ModuleTests:
     - Add-ProtectedDataCredential
     - Add-ProtectedDataHmac
     - Get-KeyEncryptionCertificate
-    - Get-ProtectedDataSupportedTypes
+    - Get-ProtectedDataSupportedType
     - Protect-Data
     - Remove-ProtectedDataCredential
     - Unprotect-Data

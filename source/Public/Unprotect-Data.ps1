@@ -24,7 +24,7 @@ function Unprotect-Data
     .OUTPUTS
        Object
 
-       Object may be any type returned by Get-ProtectedDataSupportedTypes. Specifically, it will be an object of the type specified in the InputObject's Type property.
+       Object may be any type returned by Get-ProtectedDataSupportedType. Specifically, it will be an object of the type specified in the InputObject's Type property.
     .LINK
         Protect-Data
     .LINK
@@ -32,7 +32,7 @@ function Unprotect-Data
     .LINK
         Remove-ProtectedDataCredential
     .LINK
-        Get-ProtectedDataSupportedTypes
+        Get-ProtectedDataSupportedType
     #>
 
     [CmdletBinding(DefaultParameterSetName = 'Certificate')]
@@ -51,9 +51,9 @@ function Unprotect-Data
 
                 $type = $_.Type -as [type]
 
-                if ($null -eq $type -or (Get-ProtectedDataSupportedTypes) -notcontains $type)
+                if ($null -eq $type -or (Get-ProtectedDataSupportedType) -notcontains $type)
                 {
-                    throw "Protected data object specified an invalid type. Type must be one of: $((Get-ProtectedDataSupportedTypes) -join ', ')"
+                    throw "Protected data object specified an invalid type. Type must be one of: $((Get-ProtectedDataSupportedType) -join ', ')"
                 }
 
                 return $true
@@ -105,13 +105,14 @@ function Unprotect-Data
     process
     {
         $plainText = $null
-        $aes = $null
         $key = $null
         $iv = $null
 
         if ($null -ne $Password)
         {
-            $params = @{ Password = $Password }
+            $params = @{
+                Password = $Password
+            }
         }
         else
         {
@@ -132,6 +133,7 @@ function Unprotect-Data
                             }
                             catch
                             {
+                                Write-Verbose -Message $_.Exception.Message
                             }
 
                             if ($null -ne $certObject)
@@ -168,7 +170,7 @@ function Unprotect-Data
 
             $hmac = $InputObject.HMAC
 
-            $plainText = (Unprotect-DataWithAes -CipherText $InputObject.CipherText -Key $key -InitializationVector $iv -HMAC $hmac).PlainText
+            $plainText = (Unprotect-DataWithAES -CipherText $InputObject.CipherText -Key $key -InitializationVector $iv -HMAC $hmac).PlainText
 
             ConvertFrom-ByteArray -ByteArray $plainText -Type $InputObject.Type -ByteCount $plainText.Count
         }

@@ -34,7 +34,7 @@ function Add-ProtectedDataHmac
     .LINK
         Remove-ProtectedDataCredential
     .LINK
-        Get-ProtectedDataSupportedTypes
+        Get-ProtectedDataSupportedType
     #>
 
     [CmdletBinding(DefaultParameterSetName = 'Certificate')]
@@ -53,9 +53,9 @@ function Add-ProtectedDataHmac
 
                 $type = $_.Type -as [type]
 
-                if ($null -eq $type -or (Get-ProtectedDataSupportedTypes) -notcontains $type)
+                if ($null -eq $type -or (Get-ProtectedDataSupportedType) -notcontains $type)
                 {
-                    throw "Protected data object specified an invalid type. Type must be one of: $((Get-ProtectedDataSupportedTypes) -join ', ')"
+                    throw "Protected data object specified an invalid type. Type must be one of: $((Get-ProtectedDataSupportedType) -join ', ')"
                 }
 
                 return $true
@@ -70,9 +70,11 @@ function Add-ProtectedDataHmac
         [System.Security.SecureString]
         $Password,
 
+        [Parameter()]
         [switch]
         $SkipCertificateVerification,
 
+        [Parameter()]
         [switch]
         $PassThru
     )
@@ -113,11 +115,15 @@ function Add-ProtectedDataHmac
 
         if ($null -ne $cert)
         {
-            $params = @{ Certificate = $cert }
+            $params = @{
+                Certificate = $cert
+            }
         }
         else
         {
-            $params = @{ Password = $Password }
+            $params = @{
+                Password = $Password
+            }
         }
 
         try

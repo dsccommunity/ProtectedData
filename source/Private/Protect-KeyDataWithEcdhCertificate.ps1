@@ -37,10 +37,10 @@ function Protect-KeyDataWithEcdhCertificate
             throw "Error: Key material derived from ECDH certificate $($Certificate.Thumbprint) was less than the required 32 bytes"
         }
 
-        $ecdhIv = Get-RandomBytes -Count 16
+        $ecdhIv = Get-RandomByte -Count 16
 
-        $encryptedKey = Protect-DataWithAes -PlainText $Key -Key $derivedKey -InitializationVector $ecdhIv -NoHMAC
-        $encryptedIv = Protect-DataWithAes -PlainText $InitializationVector -Key $derivedKey -InitializationVector $ecdhIv -NoHMAC
+        $encryptedKey = Protect-DataWithAES -PlainText $Key -Key $derivedKey -InitializationVector $ecdhIv -NoHMAC
+        $encryptedIv = Protect-DataWithAES -PlainText $InitializationVector -Key $derivedKey -InitializationVector $ecdhIv -NoHMAC
 
         New-Object psobject -Property @{
             Key           = $encryptedKey.CipherText

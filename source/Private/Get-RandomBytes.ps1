@@ -1,8 +1,8 @@
 
-function Get-RandomBytes
+function Get-RandomByte
 {
     [CmdletBinding()]
-    [OutputType([byte[]])]
+    [OutputType([System.Array])]
     param (
         [Parameter(Mandatory = $true)]
         [ValidateRange(1, 1000)]

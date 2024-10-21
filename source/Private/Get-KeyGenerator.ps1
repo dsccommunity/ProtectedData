@@ -30,7 +30,7 @@ function Get-KeyGenerator
         }
         else
         {
-            $saltBytes = Get-RandomBytes -Count 32
+            $saltBytes = Get-RandomByte -Count 32
         }
 
         New-Object System.Security.Cryptography.Rfc2898DeriveBytes($byteArray, $saltBytes, $IterationCount)

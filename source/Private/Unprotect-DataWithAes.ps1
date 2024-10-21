@@ -1,4 +1,4 @@
-function Unprotect-DataWithAes
+function Unprotect-DataWithAES
 {
     [CmdletBinding()]
     param (

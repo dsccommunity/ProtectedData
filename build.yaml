@@ -7,12 +7,7 @@ CopyPaths:
   - en-US
   - Lib
 Encoding: UTF8
-
 VersionedOutputDirectory: true
-
-####################################################
-#      ModuleBuilder Submodules Configuration      #
-####################################################
 Prefix: Prefix.ps1
 
 ####################################################
@@ -64,25 +59,29 @@ TaskHeader: |
   Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
   ""
 
-
 ####################################################
 #           Pester Configuration                   #
 ####################################################
 Pester:
-  OutputFormat: NUnitXML
+  Configuration:
+    Run:
+      Path:
+        - tests/Integration
+    Output:
+      Verbosity: Detailed
+      StackTraceVerbosity: Full
+      CIFormat: Auto
+    CodeCoverage:
+      CoveragePercentTarget: 75
+      OutputEncoding: ascii
+      UseBreakpoints: false
+    TestResult:
+      OutputFormat: NUnitXML
+      OutputEncoding: ascii
   ExcludeFromCodeCoverage:
-
-  Script:
-  # - tests/QA/module.tests.ps1
-  # - tests/QA
-  # - tests/Unit
-  # - tests/Integration
-  ExcludeTag:
-  #  - helpQuality
-  #  - FunctionalQuality
-  #  - TestQuality
-  Tag:
-  CodeCoverageThreshold: 5
+    - Templates
+    - Modules/DscResource.Common
+    - Assets
 
 ####################################################
 #             HQRM Test Configuration              #

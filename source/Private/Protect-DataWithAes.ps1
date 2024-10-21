@@ -1,4 +1,4 @@
-function Protect-DataWithAes
+function Protect-DataWithAES
 {
     [CmdletBinding(DefaultParameterSetName = 'KnownKey')]
     param (

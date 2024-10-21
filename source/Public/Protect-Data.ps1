@@ -7,7 +7,7 @@ function Protect-Data
        Encrypts an object using a randomly-generated AES key. AES key information is encrypted using one or more certificate public keys and/or password-derived keys, allowing the data to be securely shared among multiple users and computers.
        If certificates are used, they must be installed in either the local computer or local user's certificate stores, and the certificates' Key Usage extension must allow Key Encipherment (for RSA) or Key Agreement (for ECDH). The private keys are not required for Protect-Data.
     .PARAMETER InputObject
-       The object that is to be encrypted. The object must be of one of the types returned by the Get-ProtectedDataSupportedTypes command.
+       The object that is to be encrypted. The object must be of one of the types returned by the Get-ProtectedDataSupportedType command.
     .PARAMETER Certificate
        Zero or more RSA or ECDH certificates that should be used to encrypt the data. The data can later be decrypted by using the same certificate (with its private key.)  You can pass an X509Certificate2 object to this parameter, or you can pass in a string which contains either a path to a certificate file on the file system, a path to the certificate in the Certificate provider, or a certificate thumbprint (in which case the certificate provider will be searched to find the certificate.)
     .PARAMETER UseLegacyPadding
@@ -30,7 +30,7 @@ function Protect-Data
     .INPUTS
        Object
 
-       Object must be one of the types returned by the Get-ProtectedDataSupportedTypes command.
+       Object must be one of the types returned by the Get-ProtectedDataSupportedType command.
     .OUTPUTS
        PSObject
 
@@ -46,7 +46,7 @@ function Protect-Data
     .LINK
         Remove-ProtectedDataCredential
     .LINK
-        Get-ProtectedDataSupportedTypes
+        Get-ProtectedDataSupportedType
     #>
 
     [CmdletBinding()]
@@ -54,9 +54,9 @@ function Protect-Data
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0)]
         [ValidateScript({
-                if ((Get-ProtectedDataSupportedTypes) -notcontains $_.GetType() -and $null -eq ($_ -as [byte[]]))
+                if ((Get-ProtectedDataSupportedType) -notcontains $_.GetType() -and $null -eq ($_ -as [byte[]]))
                 {
-                    throw "InputObject must be one of the following types: $((Get-ProtectedDataSupportedTypes) -join ', ')"
+                    throw "InputObject must be one of the following types: $((Get-ProtectedDataSupportedType) -join ', ')"
                 }
 
                 if ($_ -is [System.Security.SecureString] -and $_.Length -eq 0)
@@ -139,7 +139,7 @@ function Protect-Data
         try
         {
             $plainText = ConvertTo-PinnedByteArray -InputObject $InputObject
-            $payload = Protect-DataWithAes -PlainText $plainText
+            $payload = Protect-DataWithAES -PlainText $plainText
 
             $protectedData = New-Object psobject -Property @{
                 CipherText = $payload.CipherText

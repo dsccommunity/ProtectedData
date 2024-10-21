@@ -33,6 +33,7 @@ function Remove-ProtectedDataCredential
     #>
 
     [CmdletBinding()]
+    [Diagnostics.CodeAnalysis.SuppressMessageAttribute('PSUseShouldProcessForStateChangingFunctions', '', Justification = 'Not required for this function.')]
     param (
         [Parameter(Mandatory = $true, ValueFromPipeline = $true, Position = 0)]
         [ValidateScript({
@@ -105,7 +106,7 @@ function Remove-ProtectedDataCredential
 
         if ($matchingKeyData.Count -eq $InputObject.KeyData.Count)
         {
-            Write-Error 'You must leave at least one copy of the ProtectedData object''s keys.'
+            Write-Error "You must leave at least one copy of the ProtectedData object's keys."
             return
         }
 

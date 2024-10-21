@@ -1,10 +1,10 @@
-function Get-ProtectedDataSupportedTypes
+function Get-ProtectedDataSupportedType
 {
    <#
     .Synopsis
        Returns a list of types that can be used as the InputObject in the Protect-Data command.
     .EXAMPLE
-       $types = Get-ProtectedDataSupportedTypes
+       $types = Get-ProtectedDataSupportedType
     .INPUTS
        None.
     .OUTPUTS
@@ -18,7 +18,7 @@ function Get-ProtectedDataSupportedTypes
     #>
 
    [CmdletBinding()]
-   [OutputType([Type[]])]
+   [OutputType([System.Object[]])]
    param ( )
 
    return [string],

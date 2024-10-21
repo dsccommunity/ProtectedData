@@ -13,19 +13,23 @@ function Add-KeyData
         [byte[]]
         $InitializationVector,
 
+        [Parameter()]
         [ValidateNotNull()]
         [AllowEmptyCollection()]
         [System.Security.Cryptography.X509Certificates.X509Certificate2[]]
         $Certificate = @(),
 
+        [Parameter()]
         [switch]
         $UseLegacyPadding,
 
+        [Parameter()]
         [ValidateNotNull()]
         [AllowEmptyCollection()]
         [System.Security.SecureString[]]
         $Password = @(),
 
+        [Parameter()]
         [ValidateRange(1, 2147483647)]
         [int]
         $PasswordIterationCount = 50000
@@ -35,8 +39,6 @@ function Add-KeyData
     {
         return
     }
-
-    $useOAEP = -not $UseLegacyPadding
 
     $InputObject.KeyData += @(
         foreach ($cert in $Certificate)

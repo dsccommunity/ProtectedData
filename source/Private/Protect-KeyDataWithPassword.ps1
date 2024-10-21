@@ -30,11 +30,11 @@ function Protect-KeyDataWithPassword
         $ephemeralKey = New-Object PowerShellUtils.PinnedArray[byte](, $keyGen.GetBytes(32))
         $ephemeralIV = New-Object PowerShellUtils.PinnedArray[byte](, $keyGen.GetBytes(16))
 
-        $hashSalt = Get-RandomBytes -Count 32
+        $hashSalt = Get-RandomByte -Count 32
         $hash = Get-PasswordHash -Password $Password -Salt $hashSalt -IterationCount $IterationCount
 
-        $encryptedKey = (Protect-DataWithAes -PlainText $Key -Key $ephemeralKey -InitializationVector $ephemeralIV -NoHMAC).CipherText
-        $encryptedIV = (Protect-DataWithAes -PlainText $InitializationVector -Key $ephemeralKey -InitializationVector $ephemeralIV -NoHMAC).CipherText
+        $encryptedKey = (Protect-DataWithAES -PlainText $Key -Key $ephemeralKey -InitializationVector $ephemeralIV -NoHMAC).CipherText
+        $encryptedIV = (Protect-DataWithAES -PlainText $InitializationVector -Key $ephemeralKey -InitializationVector $ephemeralIV -NoHMAC).CipherText
 
         New-Object psobject -Property @{
             Key            = $encryptedKey
