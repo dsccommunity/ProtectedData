@@ -33,6 +33,9 @@ BuildWorkflow:
     - build
     - package_module_nupkg
 
+  hqrmtest:
+    - Invoke_HQRM_Tests_Stop_On_Fail
+
   test:
     - Pester_Tests_Stop_On_Fail
     - Pester_if_Code_Coverage_Under_Threshold
@@ -43,34 +46,6 @@ BuildWorkflow:
   publish:
     - publish_module_to_gallery
     - Publish_Release_To_GitHub
-
-####################################################
-#       PESTER  Configuration                      #
-####################################################
-Pester:
-  OutputFormat: NUnitXML
-  ExcludeFromCodeCoverage:
-
-  Script:
-  # - tests/QA/module.tests.ps1
-  # - tests/QA
-  # - tests/Unit
-  # - tests/Integration
-  ExcludeTag:
-  #  - helpQuality
-  #  - FunctionalQuality
-  #  - TestQuality
-  Tag:
-  CodeCoverageThreshold: 5
-
-DscTest:
-  ExcludeTag:
-    - "Common Tests - New Error-Level Script Analyzer Rules"
-  Tag:
-  ExcludeSourceFile:
-    - output
-  ExcludeModuleFile:
-    - Modules/DscResource.Common
 
 ModuleBuildTasks:
   Sampler:
@@ -88,3 +63,53 @@ TaskHeader: |
   Write-Build DarkGray "  $Path"
   Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
   ""
+
+
+####################################################
+#           Pester Configuration                   #
+####################################################
+Pester:
+  OutputFormat: NUnitXML
+  ExcludeFromCodeCoverage:
+
+  Script:
+  # - tests/QA/module.tests.ps1
+  # - tests/QA
+  # - tests/Unit
+  # - tests/Integration
+  ExcludeTag:
+  #  - helpQuality
+  #  - FunctionalQuality
+  #  - TestQuality
+  Tag:
+  CodeCoverageThreshold: 5
+
+####################################################
+#             HQRM Test Configuration              #
+####################################################
+
+DscTest:
+  Pester:
+    Configuration:
+      Filter:
+        ExcludeTag:
+          - Common Tests - New Error-Level Script Analyzer Rules
+          - Common Tests - Validate Localization
+          - Common Tests - Validate Example Files To Be Published
+          - Common Tests - Validate Example Files
+          - RequiredPSSA
+      Output:
+        Verbosity: Detailed
+        CIFormat: Auto
+      TestResult:
+        OutputFormat: NUnitXML
+        OutputEncoding: ascii
+        OutputPath: ./output/testResults/NUnitXml_HQRM_Tests.xml
+  Script:
+    ExcludeSourceFile:
+      - output
+      - Modules/DscResource.Common
+    ExcludeModuleFile:
+      - Templates
+      - Modules/DscResource.Common
+    MainGitBranch: main
