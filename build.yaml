@@ -34,7 +34,7 @@ BuildWorkflow:
     - package_module_nupkg
 
   hqrmtest:
-    - Invoke_HQRM_Tests_Stop_On_Fail
+    - DscResource_Tests_Stop_On_Fail
 
   test:
     - Pester_Tests_Stop_On_Fail
