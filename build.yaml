@@ -73,6 +73,7 @@ Pester:
       CIFormat: Auto
     CodeCoverage:
       CoveragePercentTarget: 75
+      OutputPath: JaCoCo_coverage.xml
       OutputEncoding: ascii
       UseBreakpoints: false
     TestResult:
