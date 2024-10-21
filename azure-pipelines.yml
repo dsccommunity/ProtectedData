@@ -116,7 +116,7 @@ stages:
             displayName: 'Publish Test Artifact'
             inputs:
               targetPath: '$(buildFolderName)/$(testResultFolderName)/'
-              artifactName: CodeCoverageWinPS51
+              artifactName: CodeCoverageWinPS51_$(System.JobAttempt)
               parallel: true
 
       - job: test_windows_ps7
@@ -149,7 +149,7 @@ stages:
             displayName: 'Publish Test Artifact'
             inputs:
               targetPath: '$(buildFolderName)/$(testResultFolderName)/'
-              artifactName: CodeCoverageWinPS7
+              artifactName: CodeCoverageWinPS7_$(System.JobAttempt)
               parallel: true
 
       - job: Code_Coverage
@@ -181,13 +181,13 @@ stages:
             displayName: 'Download Test Artifact Windows (PS 5.1)'
             inputs:
               buildType: 'current'
-              artifactName: CodeCoverageWinPS51
+              artifactName: CodeCoverageWinPS51_$(System.JobAttempt)
               targetPath: '$(Build.SourcesDirectory)/$(buildFolderName)/$(testResultFolderName)'
           - task: DownloadPipelineArtifact@2
             displayName: 'Download Test Artifact Windows (PS7)'
             inputs:
               buildType: 'current'
-              artifactName: CodeCoverageWinPS7
+              artifactName: CodeCoverageWinPS7_$(System.JobAttempt)
               targetPath: '$(Build.SourcesDirectory)/$(buildFolderName)/$(testResultFolderName)'
 
           - task: PowerShell@2
@@ -202,11 +202,11 @@ stages:
             displayName: 'Publish Code Coverage to Azure DevOps'
             inputs:
               codeCoverageTool: 'JaCoCo'
-              summaryFileLocation: '$(Build.SourcesDirectory)/$(buildFolderName)/$(testResultFolderName)/JaCoCo_coverage.xml'
+              summaryFileLocation: '$(Build.SourcesDirectory)/$(buildFolderName)/$(testResultFolderName)/CodeCovMerged.xml'
               pathToSources: '$(Build.SourcesDirectory)/$(sourceFolderName)/'
 
           - script: |
-              bash <(curl -s https://codecov.io/bash) -f "./$(buildFolderName)/$(testResultFolderName)/JaCoCo_coverage.xml"
+              bash <(curl -s https://codecov.io/bash) -f "./$(buildFolderName)/$(testResultFolderName)/CodeCovMerged.xml"
             displayName: 'Publish Code Coverage to Codecov.io'
 
   - stage: Deploy

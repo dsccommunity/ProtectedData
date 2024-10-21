@@ -73,9 +73,10 @@ Pester:
       CIFormat: Auto
     CodeCoverage:
       CoveragePercentTarget: 75
-      OutputPath: JaCoCo_coverage.xml
       OutputEncoding: ascii
       UseBreakpoints: false
+      CodeCoverageMergedOutputFile: CodeCovMerged.xml
+      CodeCoverageFilePattern: Codecov*.xml
     TestResult:
       OutputFormat: NUnitXML
       OutputEncoding: ascii
