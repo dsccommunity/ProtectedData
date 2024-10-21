@@ -92,11 +92,7 @@ DscTest:
     Configuration:
       Filter:
         ExcludeTag:
-          - Common Tests - New Error-Level Script Analyzer Rules
-          - Common Tests - Validate Localization
-          - Common Tests - Validate Example Files To Be Published
-          - Common Tests - Validate Example Files
-          - RequiredPSSA
+        - RequiredPSSA
       Output:
         Verbosity: Detailed
         CIFormat: Auto
@@ -107,8 +103,5 @@ DscTest:
   Script:
     ExcludeSourceFile:
       - output
-      - Modules/DscResource.Common
     ExcludeModuleFile:
-      - Templates
-      - Modules/DscResource.Common
     MainGitBranch: main

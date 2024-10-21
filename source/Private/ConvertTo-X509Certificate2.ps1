@@ -1,6 +1,5 @@
 function ConvertTo-X509Certificate2
 {
-    [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("PSPossibleIncorrectComparisonWithNull", "")]
     [CmdletBinding()]
     [OutputType([System.Security.Cryptography.X509Certificates.X509Certificate2])]
     param (
@@ -21,7 +20,7 @@ function ConvertTo-X509Certificate2
             $possibleCerts = @(
                 $object -as [System.Security.Cryptography.X509Certificates.X509Certificate2]
                 Get-CertificateFromPSPath -Path $object
-            ) -ne $null
+            ).Where({ $_ -ne $null })
 
             if ($object -match '^[A-F\d]+$' -and $possibleCerts.Count -eq 0)
             {
