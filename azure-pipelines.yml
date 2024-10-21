@@ -155,8 +155,8 @@ stages:
       - job: Code_Coverage
         displayName: 'Publish Code Coverage'
         dependsOn:
-          -test_windows_ps51
-          -test_windows_ps7
+          - test_windows_ps51
+          - test_windows_ps7
         condition: succeededOrFailed()
         pool:
           vmImage: 'ubuntu-latest'
