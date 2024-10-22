@@ -1,0 +1,131 @@
+---
+####################################################
+#          ModuleBuilder Configuration             #
+####################################################
+BuiltModuleSubdirectory: module
+CopyPaths:
+  - en-US
+  - Lib
+Encoding: UTF8
+VersionedOutputDirectory: true
+Prefix: Prefix.ps1
+
+####################################################
+#       Sampler Pipeline Configuration             #
+####################################################
+BuildWorkflow:
+  ".":
+    - build
+    - test
+
+  build:
+    - Clean
+    - Build_Module_ModuleBuilder
+    - Build_NestedModules_ModuleBuilder
+    - Create_changelog_release_output
+
+  pack:
+    - build
+    - package_module_nupkg
+
+  hqrmtest:
+    - Invoke_HQRM_Tests_Stop_On_Fail
+
+  test:
+    - Pester_Tests_Stop_On_Fail
+    - Pester_if_Code_Coverage_Under_Threshold
+
+  merge:
+  - Merge_CodeCoverage_Files
+
+  publish:
+    - publish_module_to_gallery
+    - Publish_Release_To_GitHub
+
+ModuleBuildTasks:
+  Sampler:
+    - '*.build.Sampler.ib.tasks'
+  Sampler.GitHubTasks:
+    - '*.ib.tasks'
+  DscResource.DocGenerator:
+    - 'Task.*'
+  DscResource.Test:
+    - 'Task.*'
+
+TaskHeader: |
+  param($Path)
+  ""
+  "=" * 79
+  Write-Build Cyan "`t`t`t$($Task.Name.replace("_"," ").ToUpper())"
+  Write-Build DarkGray  "$(Get-BuildSynopsis $Task)"
+  "-" * 79
+  Write-Build DarkGray "  $Path"
+  Write-Build DarkGray "  $($Task.InvocationInfo.ScriptName):$($Task.InvocationInfo.ScriptLineNumber)"
+  ""
+
+####################################################
+#           Pester Configuration                   #
+####################################################
+Pester:
+  Configuration:
+    Run:
+      Path:
+        - tests/Integration
+    Output:
+      Verbosity: Detailed
+      StackTraceVerbosity: Full
+      CIFormat: Auto
+    CodeCoverage:
+      CoveragePercentTarget: 75
+      OutputEncoding: ascii
+      UseBreakpoints: false
+      CodeCoverageFilePattern: Codecov*.xml
+    TestResult:
+      OutputFormat: NUnitXML
+      OutputEncoding: ascii
+  ExcludeFromCodeCoverage:
+
+####################################################
+#             HQRM Test Configuration              #
+####################################################
+DscTest:
+  Pester:
+    Configuration:
+      Filter:
+        ExcludeTag:
+          - Common Tests - New Error-Level Script Analyzer Rules
+          - Common Tests - Validate Localization
+          - Common Tests - Validate Example Files To Be Published
+          - Common Tests - Validate Example Files
+          - RequiredPSSA
+      Output:
+        Verbosity: Detailed
+        CIFormat: Auto
+      TestResult:
+        OutputFormat: NUnitXML
+        OutputEncoding: ascii
+        OutputPath: ./output/testResults/NUnitXml_HQRM_Tests.xml
+  Script:
+    ExcludeSourceFile:
+      - output
+    ExcludeModuleFile:
+    MainGitBranch: main
+
+####################################################
+#               GitHub Configuration               #
+####################################################
+GitHubConfig:
+  GitHubFilesToAdd:
+    - CHANGELOG.md
+  ReleaseAssets:
+    - output/WikiContent.zip
+  GitHubConfigUserName: dscbot # cSpell: disable-line
+  GitHubConfigUserEmail: dsccommunity@outlook.com
+  UpdateChangelogOnPrerelease: false
+
+####################################################
+#             DscResource.DocGenerator             #
+####################################################
+DscResource.DocGenerator:
+  Generate_Conceptual_Help:
+    BuiltModuleSubdirectory: Module
