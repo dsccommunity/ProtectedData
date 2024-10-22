@@ -106,3 +106,15 @@ DscTest:
       - output
     ExcludeModuleFile:
     MainGitBranch: main
+
+####################################################
+#               GitHub Configuration               #
+####################################################
+GitHubConfig:
+  GitHubFilesToAdd:
+    - CHANGELOG.md
+  ReleaseAssets:
+    - output/WikiContent.zip
+  GitHubConfigUserName: dscbot # cSpell: disable-line
+  GitHubConfigUserEmail: dsccommunity@outlook.com
+  UpdateChangelogOnPrerelease: false
