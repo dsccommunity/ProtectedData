@@ -29,7 +29,7 @@ BuildWorkflow:
     - package_module_nupkg
 
   hqrmtest:
-    - DscResource_Tests_Stop_On_Fail
+    - Invoke_HQRM_Tests_Stop_On_Fail
 
   test:
     - Pester_Tests_Stop_On_Fail
@@ -44,9 +44,13 @@ BuildWorkflow:
 
 ModuleBuildTasks:
   Sampler:
-    - "*.build.Sampler.ib.tasks"
+    - '*.build.Sampler.ib.tasks'
   Sampler.GitHubTasks:
-    - "*.ib.tasks"
+    - '*.ib.tasks'
+  DscResource.DocGenerator:
+    - 'Task.*'
+  DscResource.Test:
+    - 'Task.*'
 
 TaskHeader: |
   param($Path)
@@ -80,20 +84,20 @@ Pester:
       OutputFormat: NUnitXML
       OutputEncoding: ascii
   ExcludeFromCodeCoverage:
-    - Templates
-    - Modules/DscResource.Common
-    - Assets
 
 ####################################################
 #             HQRM Test Configuration              #
 ####################################################
-
 DscTest:
   Pester:
     Configuration:
       Filter:
         ExcludeTag:
-        - RequiredPSSA
+          - Common Tests - New Error-Level Script Analyzer Rules
+          - Common Tests - Validate Localization
+          - Common Tests - Validate Example Files To Be Published
+          - Common Tests - Validate Example Files
+          - RequiredPSSA
       Output:
         Verbosity: Detailed
         CIFormat: Auto
@@ -118,3 +122,10 @@ GitHubConfig:
   GitHubConfigUserName: dscbot # cSpell: disable-line
   GitHubConfigUserEmail: dsccommunity@outlook.com
   UpdateChangelogOnPrerelease: false
+
+####################################################
+#             DscResource.DocGenerator             #
+####################################################
+DscResource.DocGenerator:
+  Generate_Conceptual_Help:
+    BuiltModuleSubdirectory: Module
