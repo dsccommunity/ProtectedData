@@ -1,4 +1,4 @@
-## Security
+# Security
 
 The DSC Community takes the security of our modules seriously, which
 includes all source code repositories managed through our GitHub organization.
